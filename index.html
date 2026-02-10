@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kavi, Will You Be My Valentine? 💘</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      max-width: 420px;
+      width: 90%;
+      z-index: 2;
+    }
+
+    h1 {
+      color: #ff4d6d;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+    }
+
+    /* Improved NO button visibility */
+    #no {
+      background: #e0e0e0;           /* brighter grey */
+      color: #333;
+      border: 2px solid #bdbdbd;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      position: fixed;
+      z-index: 3;
+      font-weight: bold;
+    }
+
+    /* Shake animation */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
+    }
+
+    .music-btn {
+      background: #ffb3c1;
+      font-size: 14px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card" id="card">
+    <h1>Hey Kavi 💕</h1>
+    <p id="message">
+      I’ve been wanting to ask you something special 😳  
+      <br><br>
+      Kavi, will you be my Valentine? 💘
+    </p>
+
+    <button id="yes">YES 💖</button>
+  </div>
+
+  <button id="no">No 😒</button>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const message = document.getElementById("message");
+    const card = document.getElementById("card");
+
+    const noMessages = [
+      "Kavi… wrong button 😳",
+      "HEY 😤",
+      "Nice try 😏",
+      "Don’t do this 💕",
+      "This is getting embarrassing 😬",
+      "I give up 🏃‍♂️"
+    ];
+
+    const noTexts = ["No 😒", "NOPE ❌", "Nice try 😏", "😬", "LOL NO"];
+
+    let noCount = 0;
+
+    moveNo();
+
+    function moveNo() {
+  const centerX = window.innerWidth * 0.2;
+  const centerY = window.innerHeight * 0.2;
+  const rangeX = window.innerWidth * 0.6;
+  const rangeY = window.innerHeight * 0.6;
+
+  const x = centerX + Math.random() * rangeX;
+  const y = centerY + Math.random() * rangeY;
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+
+  message.textContent = noMessages[Math.min(noCount, noMessages.length - 1)];
+
+  // Random funny effect
+  const effect = Math.floor(Math.random() * 4);
+  noBtn.style.transform = "scale(1) rotate(0deg)";
+  noBtn.style.animation = "";
+
+  if (effect === 0) {
+    noBtn.style.animation = "shake 0.4s";
+  } else if (effect === 1) {
+    noBtn.style.transform = "scale(0.85)";
+  } else if (effect === 2) {
+    noBtn.style.transform = "rotate(15deg)";
+  } else if (effect === 3) {
+    noBtn.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
+  }
+
+  noCount++;
+
+  if (noCount > 6) {
+    noBtn.style.left = "-200px";
+    noBtn.style.top = "-200px";
+    message.textContent = "Okay okay… only YES is left 😌💖";
+  }
+}
+
+
+    noBtn.addEventListener("mouseover", moveNo);
+    noBtn.addEventListener("touchstart", moveNo);
+
+    yesBtn.addEventListener("click", () => {
+      card.innerHTML = `
+        <h1>KAVI SAID YES 😍💘</h1>
+
+        <p>
+          This just became my favorite moment ever 💕<br><br>
+          I’d choose you again and again ❤️
+        </p>
+
+        <p>
+          <strong>💌 From me:</strong><br>
+          Kavi, you make everything brighter.
+          Thank you for being you 💖
+        </p>
+
+        <iframe
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/stephensanchezofficial/until-i-found-you&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false"
+          style="width:100%; max-width:280px; height:80px; margin:15px auto; border-radius:12px;"
+          allow="autoplay">
+        </iframe>
+
+        <button class="music-btn" onclick="toggleMusic()">⏸ Pause / ▶ Play</button>
+
+        <p style="font-size:26px;">🌹🥰🍫</p>
+      `;
+
+      startHearts();
+      noBtn.remove();
+    });
+
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 6000);
+      }, 400);
+    }
+
+    let playing = true;
+    function toggleMusic() {
+      const iframe = document.querySelector("iframe");
+      if (!iframe) return;
+      iframe.src = playing
+        ? iframe.src.replace("auto_play=true", "auto_play=false")
+        : iframe.src.replace("auto_play=false", "auto_play=true");
+      playing = !playing;
+    }
+  </script>
+
+</body>
+</html>
