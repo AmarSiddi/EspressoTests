@@ -34,6 +34,15 @@
 
     p {
       font-size: 18px;
+      min-height: 60px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      position: relative;
     }
 
     button {
@@ -41,34 +50,21 @@
       font-size: 18px;
       border-radius: 25px;
       cursor: pointer;
-      margin: 10px;
-      transition: transform 0.2s ease;
+      border: none;
     }
 
     #yes {
       background: #ff4d6d;
       color: white;
-      border: none;
     }
 
-    /* Improved NO button visibility */
     #no {
-      background: #e0e0e0;           /* brighter grey */
+      background: #e0e0e0;
       color: #333;
       border: 2px solid #bdbdbd;
       box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-      position: fixed;
-      z-index: 3;
+      position: relative; /* static initially */
       font-weight: bold;
-    }
-
-    /* Shake animation */
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
     }
 
     /* Floating hearts */
@@ -106,10 +102,11 @@
       Kavi, will you be my Valentine? 💘
     </p>
 
-    <button id="yes">YES 💖</button>
+    <div class="buttons">
+      <button id="yes">YES 💖</button>
+      <button id="no">No 😒</button>
+    </div>
   </div>
-
-  <button id="no">No 😒</button>
 
   <script>
     const noBtn = document.getElementById("no");
@@ -122,54 +119,44 @@
       "HEY 😤",
       "Nice try 😏",
       "Don’t do this 💕",
-      "This is getting embarrassing 😬",
-      "I give up 🏃‍♂️"
+      "This is getting awkward 😬",
+      "Okay okay… only YES 😅"
     ];
 
-    const noTexts = ["No 😒", "NOPE ❌", "Nice try 😏", "😬", "LOL NO"];
+    const noTexts = ["No", "Nooo!", "Try again 🙄", "NOPE ❌"];
 
     let noCount = 0;
-
-    moveNo();
+    let hasInteractedWithNo = false;
 
     function moveNo() {
-  const centerX = window.innerWidth * 0.2;
-  const centerY = window.innerHeight * 0.2;
-  const rangeX = window.innerWidth * 0.6;
-  const rangeY = window.innerHeight * 0.6;
+      if (!hasInteractedWithNo) {
+        // First interaction: activate chaos
+        hasInteractedWithNo = true;
+        noBtn.style.position = "fixed";
+      }
 
-  const x = centerX + Math.random() * rangeX;
-  const y = centerY + Math.random() * rangeY;
+      const centerX = window.innerWidth * 0.2;
+      const centerY = window.innerHeight * 0.25;
+      const rangeX = window.innerWidth * 0.6;
+      const rangeY = window.innerHeight * 0.5;
 
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
+      const x = centerX + Math.random() * rangeX;
+      const y = centerY + Math.random() * rangeY;
 
-  message.textContent = noMessages[Math.min(noCount, noMessages.length - 1)];
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
 
-  // Random funny effect
-  const effect = Math.floor(Math.random() * 4);
-  noBtn.style.transform = "scale(1) rotate(0deg)";
-  noBtn.style.animation = "";
+      message.textContent = noMessages[Math.min(noCount, noMessages.length - 1)];
+      noBtn.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
 
-  if (effect === 0) {
-    noBtn.style.animation = "shake 0.4s";
-  } else if (effect === 1) {
-    noBtn.style.transform = "scale(0.85)";
-  } else if (effect === 2) {
-    noBtn.style.transform = "rotate(15deg)";
-  } else if (effect === 3) {
-    noBtn.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
-  }
+      noCount++;
 
-  noCount++;
-
-  if (noCount > 6) {
-    noBtn.style.left = "-200px";
-    noBtn.style.top = "-200px";
-    message.textContent = "Okay okay… only YES is left 😌💖";
-  }
-}
-
+      if (noCount > 6) {
+        noBtn.style.left = "-200px";
+        noBtn.style.top = "-200px";
+        message.textContent = "Okay okay… there’s only one choice now 😌💖";
+      }
+    }
 
     noBtn.addEventListener("mouseover", moveNo);
     noBtn.addEventListener("touchstart", moveNo);
@@ -201,7 +188,6 @@
       `;
 
       startHearts();
-      noBtn.remove();
     });
 
     function startHearts() {
